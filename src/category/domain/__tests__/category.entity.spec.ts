@@ -85,6 +85,7 @@ describe('Category Unit Tests', () => {
 
       category.activate();
       expect(category.is_active).toBeTruthy();
+      expect(validateSpy).toHaveBeenCalledTimes(2);
     })
 
     test('should disable a category', () => {
@@ -96,6 +97,20 @@ describe('Category Unit Tests', () => {
 
       category.deactivate();
       expect(category.is_active).toBeFalsy();
+      expect(validateSpy).toHaveBeenCalledTimes(2);
+    })
+
+    test('should to be able update the name and description at same time', () => { 
+      const category = Category.create({
+        name: 'Movie',
+        description: 'Movie description'
+      });
+      expect(category.name).toBe('Movie');
+
+      category.update('new name', 'new description');
+      expect(category.name).toBe('new name');
+      expect(category.description).toBe('new description')
+      expect(validateSpy).toHaveBeenCalledTimes(2);
     })
   })
 

@@ -59,10 +59,18 @@ export class Category extends Entity {
 
   activate():void { 
     this.is_active = true;
+    Category.validate(this);
   }
 
   deactivate():void {
     this.is_active = false;
+    Category.validate(this);
+  }
+
+  update(name: string, description: string) { 
+    this.name = name;
+    this.description = description;
+    Category.validate(this);
   }
 
   static validate(entity: Category) { 
