@@ -3,6 +3,7 @@ import { ValueObject } from '../value-object';
 
 export class Uuid extends ValueObject { 
   readonly id: string;
+  
   constructor(id?: string) {
     super();
     this.id = id || uuidv4();
@@ -12,6 +13,10 @@ export class Uuid extends ValueObject {
   private validate() { 
     const isValid = uuidValidate(this.id);
     if (!isValid) throw new InvalidUuidError();
+  }
+
+  toString() { 
+    return this.id;
   }
 }
 
