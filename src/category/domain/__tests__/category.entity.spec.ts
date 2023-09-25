@@ -211,7 +211,7 @@ describe("Category Validator", () => {
       });
     });
 
-    it("should a invalid category using description property", () => {
+    test("should a invalid category using description property", () => {
       expect(() =>
         Category.create({ description: 5 } as any)
       ).containsErrorMessages({
@@ -219,7 +219,7 @@ describe("Category Validator", () => {
       });
     });
 
-    it("should a invalid category using is_active property", () => {
+    test("should a invalid category using is_active property", () => {
       expect(() =>
         Category.create({ is_active: 5 } as any)
       ).containsErrorMessages({
@@ -229,7 +229,7 @@ describe("Category Validator", () => {
   });
 
   describe("changeName method", () => {
-    it("should a invalid category using name property", () => {
+    test("should a invalid category using name property", () => {
       const category = Category.create({ name: "Movie" });
       expect(() => category.changeName(null)).containsErrorMessages({
         name: [
@@ -257,7 +257,7 @@ describe("Category Validator", () => {
   });
 
   describe("changeDescription method", () => {
-    it("should a invalid category using description property", () => {
+    test("should a invalid category using description property", () => {
       const category = Category.create({ name: "Movie" });
       expect(() => category.changeDescription(5 as any)).containsErrorMessages({
         description: ["description must be a string"],

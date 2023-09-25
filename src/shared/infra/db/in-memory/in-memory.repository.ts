@@ -1,5 +1,5 @@
 import { Entity } from '../../../domain/entity';
-import { ISearcheableRepository } from '../../../domain/repository/repository-interface';
+import { ISearchableRepository } from '../../../domain/repository/repository-interface';
 import { SearchParams, SortDirection } from '../../../domain/repository/search-params';
 import { SearchResult } from '../../../domain/repository/search-result';
 import { NotFoundError } from '../../../domain/errors/not-found.error';
@@ -50,12 +50,12 @@ export abstract class InMemoryRepository<
   abstract getEntity(): new (...args: any[]) => E;
 }
 
-export abstract class InMemorySearcheableRepository<
+export abstract class InMemorySearchableRepository<
   E extends Entity,
   EntityId extends ValueObject,
   Filter = string,
 > extends InMemoryRepository<E, EntityId>
-implements ISearcheableRepository<E, EntityId, Filter> {
+implements ISearchableRepository<E, EntityId, Filter> {
   
   sortableFields: string[] = [];
 
