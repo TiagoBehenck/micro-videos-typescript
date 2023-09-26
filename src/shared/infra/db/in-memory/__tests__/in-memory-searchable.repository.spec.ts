@@ -64,7 +64,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
   describe('applyFilter method', () => { 
     test('should no filter items when filter param is null', async () => { 
-      const items =[ new StubEntity({ name: 'Test', price: 99 }) ];
+      const items = [new StubEntity({ name: 'Test', price: 99 })];
       const spyFilterMethod = jest.spyOn(items, 'filter' as any);
       const itemsFiltered = await repo['applyFilter'](items, null);
   
