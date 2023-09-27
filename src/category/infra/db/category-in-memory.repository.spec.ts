@@ -7,7 +7,7 @@ describe('Category In Memory Respository', () => {
   beforeEach(() => (repository = new CategoryInMemoryRepository()));
 
   test('should no filter items when filter object is null', async () => { 
-    const items = [Category.create({ name: 'Teste' })];
+    const items = [Category.fake().aCategory().build()];
     const filterSpy = jest.spyOn(items, 'filter' as any);
 
     const itemsFiltered = await repository['applyFilter'](items, null);
@@ -18,10 +18,10 @@ describe('Category In Memory Respository', () => {
 
   test('should filter items using filter parameter', async () => {
     const items = [
-      Category.create({ name: 'Teste' }),
-      Category.create({ name: 'Fake 01' }),
-      Category.create({ name: 'Fake 02' }),
-      Category.create({ name: 'Fake 03' }),
+      Category.fake().aCategory().withName('Teste').build(),
+      Category.fake().aCategory().withName('Fake 01').build(),
+      Category.fake().aCategory().withName('Fake 02').build(),
+      Category.fake().aCategory().withName('Fake 03').build(),
     ];
     const filterSpy = jest.spyOn(items, 'filter' as any);
 
@@ -36,10 +36,10 @@ describe('Category In Memory Respository', () => {
     const created_at = new Date();
 
     const items = [
-      new Category({ name: 'Teste', created_at }),
-      new Category({ name: 'Fake 01', created_at: new Date(created_at.getTime() + 100) }),
-      new Category({ name: 'Fake 02', created_at: new Date(created_at.getTime() + 200) }),
-      new Category({ name: 'Fake 03', created_at: new Date(created_at.getTime() + 300) }),
+      Category.fake().aCategory().withName('Teste').withCreatedAt(created_at).build(),
+      Category.fake().aCategory().withName('Fake 01').withCreatedAt(new Date(created_at.getTime() + 100)).build(),
+      Category.fake().aCategory().withName('Fake 02').withCreatedAt(new Date(created_at.getTime() + 200)).build(),
+      Category.fake().aCategory().withName('Fake 03').withCreatedAt(new Date(created_at.getTime() + 300)).build(),
     ];
 
     const itemsFiltered = await repository['applySort'](items, null, null);
