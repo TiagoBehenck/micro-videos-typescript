@@ -46,4 +46,19 @@ describe('Category In Memory Respository', () => {
 
     expect(itemsFiltered).toStrictEqual([...items.reverse()]);
   })
+
+  test('should short by name', async () => { 
+    const items = [
+      Category.fake().aCategory().withName('c').build(),
+      Category.fake().aCategory().withName('b').build(),
+      Category.fake().aCategory().withName('a').build(),
+    ];
+
+    let itemsSorted = await repository['applySort'](items, 'name', 'asc');
+    expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
+
+
+    itemsSorted = await repository['applySort'](items, 'name', 'desc');
+    expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
+  })
 })
