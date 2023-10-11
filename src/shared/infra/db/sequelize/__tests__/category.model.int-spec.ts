@@ -67,6 +67,15 @@ describe('CategoryModel Integration Tests', () => {
     })
   })
 
-  // test('create', async () => { 
-  // })
+  test('create', async () => { 
+    const arrange = {
+      category_id: '46f64908-f7df-4838-9b82-cdf0ee8b1248',
+      name: 'test',
+      is_active: true,
+      created_at: new Date(),
+    }
+
+    const category = await CategoryModel.create(arrange);
+    expect(category.toJSON()).toStrictEqual(arrange)
+  })
 })
