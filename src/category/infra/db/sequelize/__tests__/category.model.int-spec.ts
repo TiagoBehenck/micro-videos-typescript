@@ -76,6 +76,6 @@ describe('CategoryModel Integration Tests', () => {
     }
 
     const category = await CategoryModel.create(arrange);
-    expect(category.toJSON()).toStrictEqual(arrange)
+    expect(category.toJSON()).toStrictEqual(arrange);
   })
 })
