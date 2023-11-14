@@ -13,7 +13,8 @@ describe('Category Sequelize Repository Integration it', () => {
     sequelize = new Sequelize({
       dialect: 'sqlite',
       storage: ':memory:',
-      models: [CategoryModel]
+      models: [CategoryModel],
+      logging: false,
     });
 
     await sequelize.sync({ force: true });
@@ -36,7 +37,7 @@ describe('Category Sequelize Repository Integration it', () => {
   })
 
   it('should finds a entity by id', async () => { 
-    let entityFound = await repository.findById(new Uuid());
+     let entityFound = await repository.findById(new Uuid());
     expect(entityFound).toBeNull();
 
     const entity = Category.fake().aCategory().build();
@@ -63,10 +64,10 @@ describe('Category Sequelize Repository Integration it', () => {
   })
 
   it('should update a entity', async () => {
-    const entity = Category.fake().aCategory().build();
+const entity = Category.fake().aCategory().build();
     await repository.insert(entity);
 
-    entity.changeName('Change name');
+    entity.changeName("Movie updated");
     await repository.update(entity);
 
     const entityFound = await repository.findById(entity.category_id);
