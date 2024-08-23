@@ -1,10 +1,13 @@
 import { DataType, Sequelize } from 'sequelize-typescript'
 import { CategoryModel } from '../category.model'
+import { Config } from '../../../../../shared/infra/config'
 
 describe('CategoryModel Integration Tests', () => { 
   let sequelize
 
-  beforeEach(async () => { 
+  beforeEach(async () => {
+    console.log(Config.db())
+
     sequelize = new Sequelize({
       dialect: 'sqlite',
       storage: ':memory:',
