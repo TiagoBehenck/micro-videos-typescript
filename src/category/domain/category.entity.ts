@@ -1,7 +1,6 @@
 import { Entity } from '../../shared/domain/entity';
 import { EntityValidationError } from '../../shared/domain/validators/validation.error';
 import { ValueObject } from '../../shared/domain/value-object';
-// import ValidatorRules from '../../shared/domain/validators/validor-rules';
 import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
 import { CategoryFakeBuilder } from './category-fake.builder';
 import { CategoryValidatorFactory } from './category.validator';
