@@ -1,13 +1,10 @@
-import { set } from "lodash";
-import { NotFoundError } from "../../../../shared/domain/errors/not-found.error";
-import { InvalidUuidError, Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
-import { Category } from "../../../domain/category.entity";
-
-import { CategoryInMemoryRepository } from "../../../infra/db/category-in-memory.repository";
-import { CategorySequelizeRepository } from "../../../infra/db/sequelize/category-sequelize.repository";
+import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error";
+import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
+import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
+import { Category } from "../../../../domain/category.entity";
+import { CategorySequelizeRepository } from "../../../../infra/db/sequelize/category-sequelize.repository";
+import { CategoryModel } from "../../../../infra/db/sequelize/category.model";
 import { DeleteCategoryUseCase } from "../../delete-category.use-case";
-import { CategoryModel } from "../../../infra/db/sequelize/category.model";
-import { setupSequelize } from "../../../../shared/infra/testing/helpers";
 
 describe('DeleteCategoryUseCase Unit Tests', () => {
   let useCase: DeleteCategoryUseCase
