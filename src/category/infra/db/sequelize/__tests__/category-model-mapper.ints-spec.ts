@@ -1,53 +1,50 @@
-import { CategoryModel } from '../category.model'
-import { CategoryModelMapper } from '../category-model-mapper'
-import { EntityValidationError } from '../../../../../shared/domain/validators/validation.error'
-import { Category } from '../../../../domain/category.entity'
-import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo'
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers'
+import { EntityValidationError } from '../../../../../shared/domain/validators/validation.error';
+import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import { CategoryModelMapper } from '../category-model-mapper';
+import { CategoryModel } from '../category.model';
 
-describe('Category Model Mapper Integration it', () => { 
-  setupSequelize({ models: [CategoryModel] })
+describe('CategoryModelMapper Integration Tests', () => {
+  setupSequelize({ models: [CategoryModel] });
 
-  test('should throws error when category is invalid', async () => { 
+  it('should throws error when category is invalid', () => {
+    expect.assertions(2);
     const model = CategoryModel.build({
-      category_id: '35d12ea6-6d18-49a9-9842-c54748e610e2',
-    })
-
-    try { 
+      category_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
+      name: 'a'.repeat(256),
+    });
+    try {
       CategoryModelMapper.toEntity(model);
       fail('The category is valid, but it needs throws a EntityValidationError');
-    } catch(e) { 
+    } catch (e) {
       expect(e).toBeInstanceOf(EntityValidationError);
-      expect((e as EntityValidationError).error).toMatchObject(
+      expect((e as EntityValidationError).error).toMatchObject([
         {
-          name: [
-            "name should not be empty",
-            "name must be a string",
-            "name must be shorter than or equal to 255 characters"
-          ],
-        }
-      )
+          name: ['name must be shorter than or equal to 255 characters'],
+        },
+      ]);
     }
-  })
+  });
 
-  test('should convert a category aggregate to a category model', () => { 
+  it('should convert a category model to a category aggregate', () => {
     const created_at = new Date();
-    const aggregate = new Category({ 
-      category_id: new Uuid('35d12ea6-6d18-49a9-9842-c54748e610e2'),
-      name: 'some name',
+    const model = CategoryModel.build({
+      category_id: '5490020a-e866-4229-9adc-aa44b83234c4',
+      name: 'some value',
       description: 'some description',
       is_active: true,
       created_at,
-    })
-
-    const model = CategoryModelMapper.toModel(aggregate);
-
-    expect(model.toJSON()).toStrictEqual({ 
-      category_id: '35d12ea6-6d18-49a9-9842-c54748e610e2',
-      name: 'some name',
-      description: 'some description',
-      is_active: true,
-      created_at,
-    })
-  })
-})  
+    });
+    const aggregate = CategoryModelMapper.toEntity(model);
+    expect(aggregate.toJSON()).toStrictEqual(
+      new Category({
+        category_id: new Uuid('5490020a-e866-4229-9adc-aa44b83234c4'),
+        name: 'some value',
+        description: 'some description',
+        is_active: true,
+        created_at,
+      }).toJSON(),
+    );
+  });
+});
