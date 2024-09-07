@@ -131,6 +131,18 @@ describe('Category Without Validator Unit Tests', () => {
     expect(category.notification.hasErrors()).toBe(false);
   });
 
+  test('should change name and description at same time', () => { 
+    const category = new Category({
+      name: 'Movie',
+      description: 'Nice Movie',
+    });
+    category.update('new name', 'new description');
+    expect(category.name).toBe('new name');
+    expect(category.description).toBe('new description');
+    expect(Category.prototype.validate).toHaveBeenCalledTimes(1);
+    expect(category.notification.hasErrors()).toBe(false);
+  })
+
   test('should active a category', () => {
     const category = new Category({
       name: 'Filmes',

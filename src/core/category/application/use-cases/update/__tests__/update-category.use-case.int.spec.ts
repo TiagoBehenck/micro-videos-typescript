@@ -1,10 +1,10 @@
-import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error";
-import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
-import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
-import { Category } from "../../../../domain/category.entity";
-import { CategorySequelizeRepository } from "../../../../infra/db/sequelize/category-sequelize.repository";
-import { CategoryModel } from "../../../../infra/db/sequelize/category.model";
-import { UpdateCategoryUseCase } from "../../update/update-category.use-case";
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
+import { UpdateCategoryUseCase } from '../../update/update-category.use-case';
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
   let useCase: UpdateCategoryUseCase;
@@ -61,13 +61,13 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: true,
           created_at: entity.created_at,
         },
@@ -75,12 +75,12 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
+          name: 'test',
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: true,
           created_at: entity.created_at,
         },
@@ -88,13 +88,13 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
+          name: 'test',
           is_active: false,
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: false,
           created_at: entity.created_at,
         },
@@ -102,12 +102,12 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
+          name: 'test',
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: false,
           created_at: entity.created_at,
         },
@@ -115,13 +115,13 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
+          name: 'test',
           is_active: true,
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: true,
           created_at: entity.created_at,
         },
@@ -129,14 +129,14 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       {
         input: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: false,
         },
         expected: {
           id: entity.category_id.id,
-          name: "test",
-          description: "some description",
+          name: 'test',
+          description: 'some description',
           is_active: false,
           created_at: entity.created_at,
         },
@@ -150,9 +150,9 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
         ...('description' in i.input && { description: i.input.description }),
         ...('is_active' in i.input && { is_active: i.input.is_active }),
       });
-      
+
       const entityUpdated = await repository.findById(new Uuid(i.input.id));
-      
+
       expect(output).toStrictEqual({
         id: entity.category_id.id,
         name: i.expected.name,

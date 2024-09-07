@@ -1,34 +1,34 @@
-import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error"
-import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo"
-import { setupSequelize } from "../../../../../shared/infra/testing/helpers"
-import { Category } from "../../../../domain/category.entity"
-import { CategorySequelizeRepository } from "../../../../infra/db/sequelize/category-sequelize.repository"
-import { CategoryModel } from "../../../../infra/db/sequelize/category.model"
-import { GetCategoryUseCase } from "../get-category.use-case"
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
+import { GetCategoryUseCase } from '../get-category.use-case';
 
 describe('GetCategoryUseCase Integration Tests', () => {
-  let useCase: GetCategoryUseCase
-  let repository: CategorySequelizeRepository
+  let useCase: GetCategoryUseCase;
+  let repository: CategorySequelizeRepository;
 
-  setupSequelize({ models: [CategoryModel] })
+  setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
-    repository = new CategorySequelizeRepository(CategoryModel)
-    useCase = new GetCategoryUseCase(repository)
-  })
+    repository = new CategorySequelizeRepository(CategoryModel);
+    useCase = new GetCategoryUseCase(repository);
+  });
 
   it('should throws error when entity not found', async () => {
     const uuid = new Uuid();
-    await expect(() =>
-      useCase.execute({ id: uuid.id }),
-    ).rejects.toThrow(new NotFoundError(uuid.id, Category));
+    await expect(() => useCase.execute({ id: uuid.id })).rejects.toThrow(
+      new NotFoundError(uuid.id, Category),
+    );
   });
 
   it('should get a category', async () => {
     const entity = Category.fake().aCategory().build();
     repository.insert(entity);
 
-    let output = await useCase.execute({ id: entity.category_id.id })
+    const output = await useCase.execute({ id: entity.category_id.id });
 
     expect(output).toEqual({
       id: entity.category_id.id,
@@ -37,5 +37,5 @@ describe('GetCategoryUseCase Integration Tests', () => {
       is_active: entity.is_active,
       created_at: entity.created_at,
     });
-  })
-})
+  });
+});

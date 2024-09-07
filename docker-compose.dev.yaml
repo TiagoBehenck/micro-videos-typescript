@@ -10,13 +10,11 @@ services:
       - .:/home/node/app
   
   db:
-    image: mysql:latest
+    image: mysql:8.0.30-debian
     environment:
       - MYSQL_DATABASE=micro_videos
       - MYSQL_ROOT_PASSWORD=root
     volumes:
-      - ./.docker/mysql:/docker-entrypoint-initdb.d
-    tmpfs:
-      - /var/lib/mysql
+      - ./.docker/dbdata:/var/lib/mysql:delegated
     security_opt:
       - seccomp:unconfined

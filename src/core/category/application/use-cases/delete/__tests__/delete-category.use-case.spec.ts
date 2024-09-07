@@ -5,7 +5,7 @@ import {
 } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { Category } from '../../../../domain/category.entity';
 
-import { CategoryInMemoryRepository } from '../../../../infra/db/category-in-memory.repository';
+import { CategoryInMemoryRepository } from '../../../../infra/db/in-memory/category-in-memory.repository';
 import { DeleteCategoryUseCase } from '../../delete/delete-category.use-case';
 
 describe('DeleteCategoryUseCase Unit Tests', () => {

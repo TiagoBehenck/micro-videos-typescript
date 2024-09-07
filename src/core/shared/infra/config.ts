@@ -10,7 +10,7 @@ export class Config {
       dialect: 'sqlite' as any,
       host: Config.env.DB_HOST,
       logging: Config.env.DB_LOGGING === 'true',
-    }
+    };
   }
 
   static readEnv() {

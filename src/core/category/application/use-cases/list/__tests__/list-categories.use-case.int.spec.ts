@@ -1,11 +1,11 @@
-import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
-import { Category } from "../../../../domain/category.entity";
-import { CategorySequelizeRepository } from "../../../../infra/db/sequelize/category-sequelize.repository";
-import { CategoryModel } from "../../../../infra/db/sequelize/category.model";
-import { CategoryOutputMapper } from "../../common/category-output";
-import { ListCategoriesUseCase } from "../list-categories.use-case";
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
+import { CategoryOutputMapper } from '../../common/category-output';
+import { ListCategoriesUseCase } from '../list-categories.use-case';
 
-describe("ListCategoriesUseCase Integration Tests", () => {
+describe('ListCategoriesUseCase Integration Tests', () => {
   let useCase: ListCategoriesUseCase;
   let repository: CategorySequelizeRepository;
 
@@ -14,25 +14,25 @@ describe("ListCategoriesUseCase Integration Tests", () => {
   beforeEach(() => {
     repository = new CategorySequelizeRepository(CategoryModel);
     useCase = new ListCategoriesUseCase(repository);
-  })
+  });
 
   it('should return output sorted by created_at when input param is empty', async () => {
     const categories = Category.fake()
       .theCategories(2)
       .withCreatedAt((i) => new Date(new Date().getTime() + 1000 + i))
-      .build()
+      .build();
 
     await repository.bulkInsert(categories);
 
-    const output = await useCase.execute({})
+    const output = await useCase.execute({});
 
     expect(output).toStrictEqual({
-        items: [...categories].reverse().map(CategoryOutputMapper.toOutput),
-        total: 2,
-        current_page: 1,
-        last_page: 1,
-        per_page: 15,
-    })
+      items: [...categories].reverse().map(CategoryOutputMapper.toOutput),
+      total: 2,
+      current_page: 1,
+      last_page: 1,
+      per_page: 15,
+    });
   });
 
   it('should return output using pagination, sorting and filtering', async () => {
@@ -42,7 +42,7 @@ describe("ListCategoriesUseCase Integration Tests", () => {
       new Category({ name: 'AaA' }),
       new Category({ name: 'b' }),
       new Category({ name: 'c' }),
-    ]
+    ];
 
     await repository.bulkInsert(categories);
 
@@ -50,8 +50,8 @@ describe("ListCategoriesUseCase Integration Tests", () => {
       page: 1,
       per_page: 2,
       sort: 'name',
-      filter: 'a'
-    })
+      filter: 'a',
+    });
 
     expect(output).toStrictEqual({
       items: [categories[1], categories[2]].map(CategoryOutputMapper.toOutput),
@@ -59,14 +59,14 @@ describe("ListCategoriesUseCase Integration Tests", () => {
       current_page: 1,
       per_page: 2,
       last_page: 2,
-    })
+    });
 
     output = await useCase.execute({
       page: 2,
       per_page: 2,
       sort: 'name',
-      filter: 'a'
-    })
+      filter: 'a',
+    });
 
     expect(output).toStrictEqual({
       items: [categories[0]].map(CategoryOutputMapper.toOutput),
@@ -74,15 +74,15 @@ describe("ListCategoriesUseCase Integration Tests", () => {
       current_page: 2,
       per_page: 2,
       last_page: 2,
-    })
+    });
 
     output = await useCase.execute({
       page: 1,
       per_page: 2,
       sort: 'name',
       sort_dir: 'desc',
-      filter: 'a'
-    })
+      filter: 'a',
+    });
 
     expect(output).toStrictEqual({
       items: [categories[0], categories[2]].map(CategoryOutputMapper.toOutput),
@@ -90,6 +90,6 @@ describe("ListCategoriesUseCase Integration Tests", () => {
       current_page: 1,
       per_page: 2,
       last_page: 2,
-    })
+    });
   });
 });

@@ -4,17 +4,17 @@ import {
   IsOptional,
   IsString,
   validateSync,
-} from "class-validator";
+} from 'class-validator';
 
 export type UpdateCategoryInputConstructorProps = {
   id: string;
   name?: string;
   description?: string | null;
   is_active?: boolean;
-}
+};
 
 export class UpdateCategoryInput {
-  @IsString()  
+  @IsString()
   @IsNotEmpty()
   id: string;
 

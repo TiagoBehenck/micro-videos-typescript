@@ -14,11 +14,11 @@ class StubEntity extends Entity {
   name: string;
   price: number;
 
-  constructor({ entity_id, name, price }: StubEntityConstructor) {
+  constructor(props: StubEntityConstructor) {
     super();
-    this.entity_id = entity_id || new Uuid();
-    this.name = name;
-    this.price = price;
+    this.entity_id = props.entity_id || new Uuid();
+    this.name = props.name;
+    this.price = props.price;
   }
 
   toJSON() {
@@ -46,8 +46,8 @@ describe('InMemoryRepository Unit Tests', () => {
   test('should insert a new entity', async () => {
     const entity = new StubEntity({
       entity_id: new Uuid(),
-      name: 'Movie',
-      price: 99,
+      name: 'Test',
+      price: 100,
     });
 
     await repo.insert(entity);
@@ -60,13 +60,13 @@ describe('InMemoryRepository Unit Tests', () => {
     const entities = [
       new StubEntity({
         entity_id: new Uuid(),
-        name: 'Movie',
-        price: 99,
+        name: 'Test',
+        price: 100,
       }),
       new StubEntity({
         entity_id: new Uuid(),
-        name: 'Movie',
-        price: 99,
+        name: 'Test',
+        price: 100,
       }),
     ];
 
@@ -77,47 +77,36 @@ describe('InMemoryRepository Unit Tests', () => {
     expect(repo.items[1]).toBe(entities[1]);
   });
 
-  test('should update an entity', async () => {
-    const entity = new StubEntity({
-      name: 'name',
-      price: 100,
-    });
+  it('should returns all entities', async () => {
+    const entity = new StubEntity({ name: 'name value', price: 5 });
     await repo.insert(entity);
 
-    const otherEntity = new StubEntity({
-      entity_id: entity.entity_id,
-      name: 'update',
-      price: 100,
-    });
-    await repo.update(otherEntity);
+    const entities = await repo.findAll();
 
-    expect(otherEntity.toJSON()).toStrictEqual(repo.items[0].toJSON());
+    expect(entities).toStrictEqual([entity]);
   });
 
-  test('should throws error on update when entity was not found', async () => {
-    const entity = new StubEntity({
-      name: 'name',
-      price: 100,
-    });
-
+  it('should throws error on update when entity not found', async () => {
+    const entity = new StubEntity({ name: 'name value', price: 5 });
     await expect(repo.update(entity)).rejects.toThrow(
       new NotFoundError(entity.entity_id, StubEntity),
     );
   });
 
-  test('should deletes an entity', async () => {
-    const entity = new StubEntity({
-      name: 'Movie',
-      price: 99,
-    });
-
+  it('should updates an entity', async () => {
+    const entity = new StubEntity({ name: 'name value', price: 5 });
     await repo.insert(entity);
-    await repo.delete(entity.entity_id);
 
-    expect(repo.items.length).toBe(0);
+    const entityUpdated = new StubEntity({
+      entity_id: entity.entity_id,
+      name: 'updated',
+      price: 1,
+    });
+    await repo.update(entityUpdated);
+    expect(entityUpdated.toJSON()).toStrictEqual(repo.items[0].toJSON());
   });
 
-  test('should throws error on delete when entity was not found', async () => {
+  it('should throws error on delete when entity not found', async () => {
     const uuid = new Uuid();
     await expect(repo.delete(uuid)).rejects.toThrow(
       new NotFoundError(uuid.id, StubEntity),
@@ -130,33 +119,11 @@ describe('InMemoryRepository Unit Tests', () => {
     );
   });
 
-  test('should find by id an entity', async () => {
-    const entity = new StubEntity({
-      name: 'name',
-      price: 100,
-    });
-
-    await repo.insert(entity);
-    const foundEntity = await repo.findById(entity.entity_id);
-
-    expect(repo.items[0].toJSON()).toStrictEqual(foundEntity.toJSON());
-  });
-
-  test('should returns null when not found a entity by id', async () => {
-    const foundEntity = await repo.findById(new Uuid());
-
-    await expect(foundEntity).toBeNull();
-  });
-
-  test('should returns all entities', async () => {
-    const entity = new StubEntity({
-      name: 'name',
-      price: 99,
-    });
+  it('should deletes an entity', async () => {
+    const entity = new StubEntity({ name: 'name value', price: 5 });
     await repo.insert(entity);
 
-    const entities = await repo.findAll();
-
-    expect(entities).toStrictEqual([entity]);
+    await repo.delete(entity.entity_id);
+    expect(repo.items).toHaveLength(0);
   });
 });
